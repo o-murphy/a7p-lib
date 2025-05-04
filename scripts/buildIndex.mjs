@@ -148,6 +148,57 @@ const mergeProfilesIndex = ({ prevProfilesIndex, profilesIndex }) => {
     return mergedProfilesIndex;
 };
 
+const createOne = (index, filePath, result) => {
+
+    const normalizedPath = path
+        .normalize(filePath)
+        .replace(/\\/g, "/")
+        .split("/");
+    const finalPath = normalizedPath
+        .slice(normalizedPath.indexOf("gallery"))
+        .join("/");
+
+    if (result && result.profile) {
+        const profile = result?.profile;
+        const jsonData = {
+            id: index,
+            diameter: profile.bDiameter / 1000,
+            weight: profile.bWeight / 10,
+            caliber: resolveCaliber(
+                profile.caliber,
+                profile.bDiameter / 1000,
+            ),
+            path: finalPath,
+            profileName: profile.profileName,
+            name: `${profile.caliber} ${profile.cartridgeName} ${profile.bulletName}`,
+            cartridge: profile.cartridgeName,
+            bullet: profile.bulletName,
+            cartridgeVendor: resolveVendor(
+                profile.cartridgeName,
+                filePath,
+            ),
+            bulletVendor: resolveVendor(profile.bulletName),
+            dragModelType: profile.bcType,
+            meta: {
+                productName: "",
+                vendor: "",
+                bulletVendor: "",
+                caliber: "",
+                muzzle_velocity: null,
+                bc: null,
+                g7: null,
+                bulletType: "",
+                weight: null,
+                country: "",
+                url: null,
+            }
+        };
+        return jsonData
+    } else {
+        throw new Error(`Error on file: ${filePath}`);
+    }
+}
+
 const createIndex = async () => {
     const profilesIndex = [];
 
@@ -167,56 +218,7 @@ const createIndex = async () => {
     // Use Promise.all to wait for all asynchronous parseA7P operations to finish
     const parsePromises = validFilePaths.map((filePath, index) =>
         parseA7P(filePath, true)
-            .then((result) => {
-                // console.log(result.profile);
-                const normalizedPath = path
-                    .normalize(filePath)
-                    .replace(/\\/g, "/")
-                    .split("/");
-                const finalPath = normalizedPath
-                    .slice(normalizedPath.indexOf("gallery"))
-                    .join("/");
-
-                if (result && result.profile) {
-                    const profile = result?.profile;
-                    profilesIndex.push({
-                        id: index,
-                        diameter: profile.bDiameter / 1000,
-                        weight: profile.bWeight / 10,
-                        caliber: resolveCaliber(
-                            profile.caliber,
-                            profile.bDiameter / 1000,
-                        ),
-                        path: finalPath,
-                        profileName: profile.profileName,
-                        name: `${profile.caliber} ${profile.cartridgeName} ${profile.bulletName}`,
-                        cartridge: profile.cartridgeName,
-                        bullet: profile.bulletName,
-                        cartridgeVendor: resolveVendor(
-                            profile.cartridgeName,
-                            filePath,
-                        ),
-                        bulletVendor: resolveVendor(profile.bulletName),
-                        dragModelType: profile.bcType,
-                        meta: {
-                            productName: "",
-                            vendor: "",
-                            bulletVendor: "",
-                            caliber: "",
-                            muzzle_velocity: null,
-                            bc: null,
-                            g7: null,
-                            bulletType: "",
-                            weight: null,
-                            country: "",
-                            url: null,
-                            // downloadUrl: null,
-                        },
-                    });
-                } else {
-                    throw new Error(`Error on file: ${filePath}`);
-                }
-            })
+            .then(result => profilesIndex.push(createOne(index, filePath, result)))
             .catch((error) => console.error(`Error on file: ${filePath}`)),
     );
 
