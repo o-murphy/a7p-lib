@@ -100,7 +100,7 @@ def generate_directory_html(directory_path, output_path):
     <html>
     <head>
         <a>
-        <title>Index of: {os.path.relpath(directory_path, '.')}</title>
+        <title>Index of: /{os.path.relpath(directory_path, '.')}</title>
         <style>
             body {{ font-family: monospace; }}
             h1 {{ margin-bottom: 1em; }}
@@ -127,7 +127,7 @@ def generate_directory_html(directory_path, output_path):
         </script>
     </head>
     <body>
-        <h1>Index of {Path(os.path.relpath(directory_path, '.')).as_posix()}</h1>
+        <h1>Index of /{Path(os.path.relpath(directory_path, '.')).as_posix()}</h1>
         <table>
             <thead>
                 <tr>
