@@ -114,18 +114,16 @@ def generate_directory_html(directory_path, output_path):
         is_file = item["type"] == "file"
         name = item["name"]
         return (
-            is_file,                        # dirs first (False), files after (True)
-            base_name(name).lower(),       # group by common base name
-            0 if name.endswith(".a7p") else 1  # .a7p before .meta.json
+            is_file,  # dirs first (False), files after (True)
+            base_name(name).lower(),  # group by common base name
+            0 if name.endswith(".a7p") else 1,  # .a7p before .meta.json
         )
-    
-    sorted_items = sorted(items_with_info, key=sort_key)
 
+    sorted_items = sorted(items_with_info, key=sort_key)
 
     html_content = f"""<!DOCTYPE html>
     <html>
     <head>
-        <a>
         <title>Index of: {os.path.relpath(directory_path, '.')}</title>
         <style>
             body {{ font-family: monospace; }}
@@ -137,8 +135,12 @@ def generate_directory_html(directory_path, output_path):
             .back-link {{ display: block; margin-bottom: 1em; }}
             .time-col {{ width: 20em; }}
             .size-col {{ width: 10em; }}
+
+            /* #full-url-container {{ font-size: 0.8em; margin-bottom: 0.5em; }} */
+            /* #full-url-container a {{ text-decoration: none; }} */
+            /* #full-url-container span {{ margin: 0 0.3em; }} */
         </style>
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {{
                 const fullUrlContainer = document.createElement('p');
                 fullUrlContainer.id = 'full-url';
@@ -147,13 +149,54 @@ def generate_directory_html(directory_path, output_path):
                 fullUrlLink.textContent = window.location.href;
                 fullUrlContainer.appendChild(document.createTextNode('Full URL: '));
                 fullUrlContainer.appendChild(fullUrlLink);
-                const h1Element = document.querySelector('h1');
-                h1Element.parentNode.insertBefore(fullUrlContainer, h1Element);
+                const h3Element = document.querySelector('h3');
+                h3Element.parentNode.insertBefore(fullUrlContainer, h3Element);
             }});
+        </script> -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {{
+                const fullUrlContainer = document.createElement('p');
+                fullUrlContainer.id = 'full-url-container';
+                fullUrlContainer.appendChild(document.createTextNode('Path: '));
+
+                const currentPathParts = window.location.pathname.split('/').filter(part => part !== '');
+                const baseUrl = window.location.origin + '/';
+
+                const rootLink = document.createElement('a');
+                rootLink.href = baseUrl;
+                /* rootLink.textContent = window.location.hostname; */
+                rootLink.textContent = window.location.origin;
+                fullUrlContainer.appendChild(rootLink);
+                fullUrlContainer.appendChild(document.createTextNode(' / '));
+
+                let currentPartUrl = baseUrl;
+                currentPathParts.forEach((part, index) => {{
+                    currentPartUrl += part + '/'; // Simple JavaScript join
+                    const partLink = document.createElement('a');
+                    partLink.href = currentPartUrl;
+                    partLink.textContent = part;
+                    fullUrlContainer.appendChild(partLink);
+                    if (index < currentPathParts.length - 1) {{
+                        fullUrlContainer.appendChild(document.createTextNode(' / '));
+                    }}
+                }});
+
+                const h4Element = document.querySelector('h4');
+                h4Element.parentNode.insertBefore(fullUrlContainer, h4Element.nextSibling);
+            }});
+
+            // Optional: More robust URL join function if needed for complex cases
+            /*
+            function urlJoin(base, part) {{
+                const normalizedBase = base.endsWith('/') ? base : base + '/';
+                const normalizedPart = part.startsWith('/') ? part.substring(1) : part;
+                return normalizedBase + normalizedPart;
+            }}
+            */
         </script>
     </head>
     <body>
-        <h1>Index of: {Path(os.path.relpath(directory_path, '.')).as_posix()}</h1>
+        <h4>Index of: {Path(os.path.relpath(directory_path, '.')).as_posix()}</h4>
         <table>
             <thead>
                 <tr>
