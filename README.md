@@ -2,6 +2,9 @@
 
 ## Endpoints:
 
+### Use it as CDN:
+https://o-murphy.github.io/a7p-lib
+
 #### Index of all profiles and unique keys:
 
 Request:
