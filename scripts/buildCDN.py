@@ -90,11 +90,37 @@ def generate_directory_html(directory_path, output_path):
                 )
 
     # Sort items: directories first, then files by modified time (newest first)
-    sorted_items = sorted(
-        items_with_info,
-        key=lambda x: (x["type"] == "file", x["modified"]),
-        reverse=True,
-    )
+    # sorted_items = sorted(
+    #     items_with_info,
+    #     key=lambda x: (x["type"] == "file", x["modified"]),
+    #     reverse=True,
+    # )
+    # sorted_items = sorted(
+    #     items_with_info,
+    #     key=lambda x: (x["type"] == "file", x["modified"]),
+    #     reverse=True,
+    # )
+
+    def base_name(file_name):
+        if file_name.endswith(".meta.json"):
+            return file_name[:-10]  # remove ".meta.json"
+        elif file_name.endswith(".a7p"):
+            return file_name[:-4]  # remove ".a7p"
+        else:
+            return file_name
+
+    def sort_key(item):
+        # Directories come first (False < True)
+        is_file = item["type"] == "file"
+        name = item["name"]
+        return (
+            is_file,                        # dirs first (False), files after (True)
+            base_name(name).lower(),       # group by common base name
+            0 if name.endswith(".a7p") else 1  # .a7p before .meta.json
+        )
+    
+    sorted_items = sorted(items_with_info, key=sort_key)
+
 
     html_content = f"""<!DOCTYPE html>
     <html>

@@ -12,5 +12,8 @@
   },
   "dependencies": {
     "a7p-js": "^1.0.4"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }
