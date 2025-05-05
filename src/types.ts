@@ -21,10 +21,11 @@ type ProfileMeta = {
     muzzleVelocity?: number | null;
     author?: string | null;
     note?: string | null;
+    path?: string | null;
     extra?: ExtraFields | null;
 }
 
-type ProfData = {
+type ProfileIndex = {
     id: number;
     path: string,
     diameter?: number | null;
@@ -32,9 +33,5 @@ type ProfData = {
     length?: number | null;
     muzzleVelocity?: string | null;
     dragModelType?: "G1" | "G7" | "CUSTOM";
-}
-
-type ProfileIndex = {
-    prof?: ProfData | null;
     meta?: ProfileMeta | null;
 }
