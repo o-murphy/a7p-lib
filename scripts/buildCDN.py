@@ -3,7 +3,7 @@ import fnmatch
 from datetime import datetime
 from pathlib import Path
 
-exclude_patterns = {"node_modules", "public", ".git", "src", "scripts"}
+exclude_patterns = {"node_modules", ".git", "src", "scripts"}
 exclude_file_patterns = [
     "*.js",
     "*.py",
