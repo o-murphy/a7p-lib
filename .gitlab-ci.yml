@@ -1,0 +1,20 @@
+image: node:lts
+
+pages:
+  stage: deploy
+  script:
+    - mv public public_temp
+    - mkdir public
+    - mkdir -p public/public
+    - mkdir -p public/gallery
+    - mv gallery/* public/gallery/
+    - mv public_temp/* public/public/
+    - cp index.html public/.
+    - ls -la public/
+    - find public -print
+
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH

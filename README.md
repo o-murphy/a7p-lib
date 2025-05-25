@@ -3,12 +3,14 @@
 ## Endpoints:
 
 ### Use it as CDN:
-https://o-murphy.github.io/a7p-lib
+- GitLab mirror: https://o-murphy.gitlab.io/a7p-lib
+- GitHub mirror: https://o-murphy.github.io/a7p-lib
 
 #### Index of all profiles and unique keys:
 
 Request:
 ```
+GET https://o-murphy.gitlab.io/a7p-lib/public/profiles.json
 GET https://o-murphy.github.io/a7p-lib/public/profiles.json
 ```
 
@@ -84,6 +86,7 @@ Download `.a7p` file
 
 Request
 ```
+GET https://o-murphy.gitlab.io/a7p-lib/gallery/<caliber>/<filename>.a7p
 GET https://o-murphy.github.io/a7p-lib/gallery/<caliber>/<filename>.a7p
 ```
 
@@ -91,5 +94,6 @@ Get profile metadata
 
 Request
 ```
+GET https://o-murphy.gitlab.io/a7p-lib/gallery/<caliber>/<filename>.meta.json
 GET https://o-murphy.github.io/a7p-lib/gallery/<caliber>/<filename>.meta.json
 ```
