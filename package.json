@@ -1,6 +1,6 @@
 {
   "name": "a7p-lib",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a7p-lib",
   "main": "index.js",
   "repository": "https://github.com/o-murphy/a7p-lib",
@@ -11,7 +11,7 @@
     "index:build": "node scripts/buildIndex.mjs"
   },
   "dependencies": {
-    "a7p-js": "^1.0.4"
+    "a7p-js": "^1.0.5"
   },
   "devDependencies": {
     "http-server": "^14.1.1"
