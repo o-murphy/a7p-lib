@@ -8,10 +8,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "index:build": "node scripts/buildIndex.mjs"
+    "index:build": "node scripts/buildIndex.mjs",
+    "serve": "http-server ."
   },
   "dependencies": {
-    "a7p-js": "^1.0.5"
+    "a7p-js": "^1.0.6"
   },
   "devDependencies": {
     "http-server": "^14.1.1"
