@@ -12,7 +12,7 @@
     "serve": "http-server ."
   },
   "dependencies": {
-    "a7p-js": "^1.0.6"
+    "a7p-js": "^1.0.7"
   },
   "devDependencies": {
     "http-server": "^14.1.1"

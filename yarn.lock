@@ -62,10 +62,10 @@
   dependencies:
     undici-types "~6.21.0"
 
-a7p-js@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/a7p-js/-/a7p-js-1.0.6.tgz#19d587fa7e6cf46501e87a42555ba09db408f6a8"
-  integrity sha512-AMFzoDK2vUEbrObKduaLyDi28CyuECmhCVFP5Lejc9UlzcsUzeA5+H+7pj18kDknKHyTUtXO3HwsaP6p5Sgukg==
+a7p-js@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/a7p-js/-/a7p-js-1.0.7.tgz#d606414198baa995b753e1a6ff57fb7a2d5fb73e"
+  integrity sha512-7HhrAw5orX6RxUsXiJJ6jA2LK3ZDC104ARloWsef9s2M4Wm63snAKUxFMpJ7wP3x02lJvqirVlSDOAiT9FesEw==
   dependencies:
     base64-js "^1.5.1"
     crypto-js "^4.2.0"
