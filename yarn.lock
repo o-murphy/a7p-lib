@@ -62,15 +62,15 @@
   dependencies:
     undici-types "~6.21.0"
 
-a7p-js@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/a7p-js/-/a7p-js-1.0.7.tgz#d606414198baa995b753e1a6ff57fb7a2d5fb73e"
-  integrity sha512-7HhrAw5orX6RxUsXiJJ6jA2LK3ZDC104ARloWsef9s2M4Wm63snAKUxFMpJ7wP3x02lJvqirVlSDOAiT9FesEw==
+a7p-js@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/a7p-js/-/a7p-js-1.0.8.tgz#9159a67bfeecf32b7885da5bfdca556e51f8729c"
+  integrity sha512-Cc4HqXu5brDroEeXrGzwc+LmL6tomHKGBkJYQ1FaUOdG1zSfH4/gWjitSkje9hWueliXwHM95KbHf1rUtLPqag==
   dependencies:
     base64-js "^1.5.1"
     crypto-js "^4.2.0"
     protobufjs "^7.5.0"
-    yup "^1.6.1"
+    yup "^1.7.1"
 
 ansi-styles@^4.1.0:
   version "4.3.0"
@@ -462,10 +462,10 @@ whatwg-encoding@^2.0.0:
   dependencies:
     iconv-lite "0.6.3"
 
-yup@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/yup/-/yup-1.6.1.tgz#8defcff9daaf9feac178029c0e13b616563ada4b"
-  integrity sha512-JED8pB50qbA4FOkDol0bYF/p60qSEDQqBD0/qeIrUCG1KbPBIQ776fCUNb9ldbPcSTxA69g/47XTo4TqWiuXOA==
+yup@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/yup/-/yup-1.7.1.tgz#4c47c6bb367df08d4bc597f8c4c4f5fc4277f6ab"
+  integrity sha512-GKHFX2nXul2/4Dtfxhozv701jLQHdf6J34YDh2cEkpqoo8le5Mg6/LrdseVLrFarmFygZTlfIhHx/QKfb/QWXw==
   dependencies:
     property-expr "^2.0.5"
     tiny-case "^1.0.3"
