@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-2.12.1.tgz#89b0a4ad6412ba55a971e107a46b6c6326ff1b8a"
   integrity sha512-BvAMfS6LrgZiryOAZ4pBYucu4wG/Ei/9o9DZ9akbREnMLbPJiom2i8b9C8IsKErQoiKqVhrerzt3kOT/RrzLHg==
 
-a7p-js@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/a7p-js/-/a7p-js-1.2.2.tgz#712a2c9a4881ab3c229e2bb3a9eb346d0082f133"
-  integrity sha512-oRfA536bMdA2+if66oSHFMWYJlFwn3rX/A0ZaubOjOssERAKdppE8oC6WNWhdVVL1qpjstIxQOOuo7LblHuWnw==
+a7p-js@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/a7p-js/-/a7p-js-1.2.3.tgz#d24933ddf2236797f957da9e45671f2573bcdb85"
+  integrity sha512-kVRobP+46U2m2O738VN0rHbhBin9/lezW2+fCR9GWsc/u/ot36dOSiZzOxnxS/JabGv2ucdsLHU3auAemvwpAA==
   dependencies:
     "@bufbuild/protobuf" "^2.12.0"
     ajv "^8.20.0"

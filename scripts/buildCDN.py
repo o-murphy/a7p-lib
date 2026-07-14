@@ -1,26 +1,86 @@
 import os
 import fnmatch
-from datetime import datetime
+import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 exclude_patterns = {"node_modules", ".git", "src", "scripts"}
+# path (posix, relative to repo root) -> epoch of the last commit touching it
+GIT_FILE_DATES = {}
+GIT_DIR_DATES = {}
 exclude_file_patterns = [
     "*.js",
     "*.py",
     "*.lock",
     "*.html",
+    "*.ps1",
+    "*.ico",
     "package.json",
     "tree.json",
 ]
 
 
+def load_git_dates(repo_root="."):
+    """Builds path -> epoch-of-last-commit maps for files and their parent dirs.
+
+    Falls back to empty maps (callers then use filesystem mtime) if git isn't
+    available or the tree isn't a repo.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "log", "--name-only", "--pretty=format:\x01%at"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return {}, {}
+
+    file_dates = {}
+    current_epoch = None
+    for line in result.stdout.splitlines():
+        if line.startswith("\x01"):
+            current_epoch = int(line[1:])
+        elif line.strip() and current_epoch is not None:
+            path = line.strip()
+            # git log lists newest commits first, so the first time we see a
+            # path is the most recent commit that touched it.
+            file_dates.setdefault(path, current_epoch)
+
+    dir_dates = {}
+    for path, epoch in file_dates.items():
+        prefix = ""
+        for part in Path(path).parts[:-1]:
+            prefix = f"{prefix}/{part}" if prefix else part
+            if epoch > dir_dates.get(prefix, -1):
+                dir_dates[prefix] = epoch
+
+    return file_dates, dir_dates
+
+
+def git_or_mtime(item_path):
+    """Last-commit epoch for item_path if tracked, else its filesystem mtime."""
+    key = Path(os.path.relpath(item_path, ".")).as_posix()
+    if key in GIT_FILE_DATES:
+        return GIT_FILE_DATES[key]
+    if key in GIT_DIR_DATES:
+        return GIT_DIR_DATES[key]
+    return os.path.getmtime(item_path)
+
+
+def iso_utc(epoch):
+    """Formats an epoch timestamp as naive-UTC ISO 8601 + '.000Z'."""
+    return (
+        datetime.fromtimestamp(epoch, timezone.utc).replace(tzinfo=None).isoformat()
+        + ".000Z"
+    )
+
+
 def get_file_info(directory_path, item):
     """Retrieves last modified time and formatted size of a file."""
     item_path = os.path.join(directory_path, item)
-    modified_time_timestamp = os.path.getmtime(item_path)
-    modified_time_utc = (
-        datetime.utcfromtimestamp(modified_time_timestamp).isoformat() + ".000Z"
-    )
+    modified_time_utc = iso_utc(git_or_mtime(item_path))
     size_bytes = os.path.getsize(item_path)
     formatted_size = format_size(size_bytes)
     return modified_time_utc, formatted_size
@@ -70,10 +130,7 @@ def generate_directory_html(directory_path, output_path):
     for item in os.listdir(directory_path):
         if not should_exclude(item):
             item_path = os.path.join(directory_path, item)
-            modified_time = (
-                datetime.utcfromtimestamp(os.path.getmtime(item_path)).isoformat()
-                + ".000Z"
-            )
+            modified_time = iso_utc(git_or_mtime(item_path))
             if os.path.isfile(item_path):
                 modified_time, size = get_file_info(directory_path, item)
                 items_with_info.append(
@@ -124,7 +181,7 @@ def generate_directory_html(directory_path, output_path):
     html_content = f"""<!DOCTYPE html>
     <html>
     <head>
-        <title>Index of: {os.path.relpath(directory_path, '.').as_posix()}</title>
+        <title>Index of: {Path(os.path.relpath(directory_path, '.')).as_posix()}</title>
         <style>
             body {{ font-family: monospace; }}
             h1 {{ margin-bottom: 1em; }}
@@ -258,6 +315,8 @@ if __name__ == "__main__":
 
     source_directory = args.path  # Your project root
     output_directory = args.path  # The directory to generate the static site
+
+    GIT_FILE_DATES, GIT_DIR_DATES = load_git_dates(source_directory)
 
     generate_static_site(source_directory, output_directory)
     print(f"Static file tree generated in the '{output_directory}' directory.")
