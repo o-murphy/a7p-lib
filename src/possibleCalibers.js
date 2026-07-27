@@ -45,7 +45,7 @@ const caliberTagMapping = {
     0.338: ["338 Lapua Magnum"],
     bolt: ["Generic term, not a caliber"],
     ракета: ["Generic term, not a caliber"],
-    выстрел: ["Generic term, not a caliber"],
+    постріл: ["Generic term, not a caliber"],
 };
 
 export default caliberTagMapping;
